@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Useless Potato</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #f7f0df, #e8dcc4);
+      color: #3b2b1f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 850px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+      padding: 45px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(70, 45, 20, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      font-size: 48px;
+      margin: 0 0 8px;
+      letter-spacing: -2px;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      opacity: 0.65;
+      margin-bottom: 35px;
+    }
+
+    .potato {
+      font-size: 150px;
+      line-height: 1;
+      display: inline-block;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+      filter: drop-shadow(0 15px 10px rgba(50, 30, 10, 0.15));
+    }
+
+    .potato:hover {
+      transform: scale(1.08) rotate(2deg);
+    }
+
+    .potato:active {
+      transform: scale(0.92) rotate(-4deg);
+    }
+
+    .timer {
+      margin-top: 25px;
+      font-size: 30px;
+      font-weight: bold;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.5;
+      margin-top: 4px;
+    }
+
+    .stats {
+      margin: 35px auto 25px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      max-width: 650px;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 18px;
+      padding: 20px 10px;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.55;
+      margin-top: 5px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 18px;
+      background: #3b2b1f;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.88;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .message {
+      min-height: 28px;
+      margin-top: 25px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .tiny {
+      margin-top: 30px;
+      font-size: 11px;
+      opacity: 0.4;
+    }
+
+    .achievement {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #3b2b1f;
+      color: white;
+      padding: 16px 20px;
+      border-radius: 16px;
+      transform: translateY(150px);
+      transition: transform 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    .achievement.show {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .potato {
+        font-size: 110px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>🥔 THE USELESS POTATO</h1>
+
+    <div class="subtitle">
+      There is absolutely no reason for this website to exist.
+    </div>
+
+    <div
+      class="potato"
+      id="potato"
+      title="You can click it. There is no reason to."
+    >
+      🥔
+    </div>
+
+    <div class="timer" id="timer">
+      00:00:00
+    </div>
+
+    <div class="label">
+      You have been honoring this potato for
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-number" id="clicks">0</div>
+        <div class="stat-label">POTATO CLICKS</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-number" id="patience">100%</div>
+        <div class="stat-label">POTATO LOYALTY</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-number" id="potatoMood">🥔</div>
+        <div class="stat-label">POTATO MOOD</div>
+      </div>
+
+    </div>
+
+    <div class="buttons">
+
+      <button onclick="patPotato()">
+        🥔 Pat the Potato
+      </button>
+
+      <button onclick="talkToPotato()">
+        💬 Ask the Potato
+      </button>
+
+      <button onclick="checkPotato()">
+        📊 Potato Statistics
+      </button>
+
+      <button onclick="doNothing()">
+        🚫 Do Nothing
+      </button>
+
+      <button onclick="dontPress()">
+        ⚠️ DO NOT PRESS
+      </button>
+
+    </div>
+
+    <div class="message" id="message">
+      The potato is waiting.
+    </div>
+
+    <div class="tiny">
+      Made for absolutely no productive reason whatsoever.
+    </div>
+
+  </div>
+
+  <div class="achievement" id="achievement">
+    🏆 ACHIEVEMENT UNLOCKED
+  </div>
+
+
+  <script>
+
+    // =========================
+    // TIMER
+    // =========================
+
+    let seconds = 0;
+
+    setInterval(() => {
+      seconds++;
+
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+
+      document.getElementById("timer").textContent =
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(secs).padStart(2, "0");
+
+    }, 1000);
+
+
+    // =========================
+    // POTATO CLICKING
+    // =========================
+
+    let clicks = 0;
+
+    document.getElementById("potato").addEventListener("click", () => {
+
+      clicks++;
+
+      document.getElementById("clicks").textContent = clicks;
+
+      const potato = document.getElementById("potato");
+
+      potato.style.transform =
+        `scale(${0.95 + Math.random() * 0.15}) rotate(${Math.random() * 12 - 6}deg)`;
+
+      setTimeout(() => {
+        potato.style.transform = "";
+      }, 180);
+
+      if (clicks === 1) {
+        showMessage("You clicked the potato. Congratulations.");
+      }
+
+      if (clicks === 10) {
+        showMessage("You have clicked the potato 10 times. Why?");
+        achievement("🥔 POTATO APPRECIATOR");
+      }
+
+      if (clicks === 25) {
+        showMessage("25 clicks. This is becoming concerning.");
+        achievement("🏆 QUESTIONABLE LIFE CHOICES");
+      }
+
+      if (clicks === 50) {
+        showMessage("50 CLICKS?! THE POTATO REMEMBERS YOU.");
+        achievement("👑 POTATO ROYALTY");
+      }
+
+      updateMood();
+
+    });
+
+
+    // =========================
+    // PAT POTATO
+    // =========================
+
+    function patPotato() {
+
+      const messages = [
+        "The potato appreciates that.",
+        "🥔 *happy potato noises*",
+        "You gently pat the potato.",
+        "The potato feels understood.",
+        "That was a very nice pat.",
+        "The potato will remember this."
+      ];
+
+      showMessage(
+        messages[Math.floor(Math.random() * messages.length)]
+      );
+
+      clicks++;
+
+      document.getElementById("clicks").textContent = clicks;
+
+      updateMood();
+    }
+
+
+    // =========================
+    // ASK THE POTATO
+    // =========================
+
+    function talkToPotato() {
+
+      const answers = [
+        "🥔",
+        "The potato has no comment.",
+        "Potato.",
+        "Interesting question.",
+        "The potato is thinking...",
+        "No.",
+        "Yes.",
+        "Maybe.",
+        "🥔🥔🥔",
+        "The potato refuses to elaborate."
+      ];
+
+      showMessage(
+        answers[Math.floor(Math.random() * answers.length)]
+      );
+    }
+
+
+    // =========================
+    // POTATO STATISTICS
+    // =========================
+
+    function checkPotato() {
+
+      const days = Math.floor(seconds / 86400);
+      const hours = Math.floor((seconds % 86400) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+
+      showMessage(
+        `Potato age: ${days} days, ${hours} hours, ${minutes} minutes.`
+      );
+    }
+
+
+    // =========================
+    // DO NOTHING
+    // =========================
+
+    function doNothing() {
+
+      showMessage(
+        "You successfully did nothing. Incredible."
+      );
+    }
+
+
+    // =========================
+    // DO NOT PRESS
+    // =========================
+
+    function dontPress() {
+
+      document.body.style.transform = "rotate(1deg)";
+
+      setTimeout(() => {
+        document.body.style.transform = "";
+      }, 200);
+
+      showMessage(
+        "I specifically told you not to press that."
+      );
+
+      achievement("🚨 YOU IGNORED THE WARNING");
+    }
+
+
+    // =========================
+    // POTATO MOOD
+    // =========================
+
+    function updateMood() {
+
+      const moods = ["🥔", "🙂", "😎", "😳", "🤨", "😌", "🥔"];
+
+      const mood =
+        moods[Math.floor(Math.random() * moods.length)];
+
+      document.getElementById("potatoMood").textContent = mood;
+
+      const loyalty = Math.min(100, 50 + clicks);
+
+      document.getElementById("patience").textContent =
+        loyalty + "%";
+    }
+
+
+    // =========================
+    // MESSAGE SYSTEM
+    // =========================
+
+    function showMessage(text) {
+
+      document.getElementById("message").textContent = text;
+
+    }
+
+
+    // =========================
+    // ACHIEVEMENTS
+    // =========================
+
+    function achievement(text) {
+
+      const box = document.getElementById("achievement");
+
+      box.textContent = text;
+
+      box.classList.add("show");
+
+      setTimeout(() => {
+        box.classList.remove("show");
+      }, 3000);
+
+    }
+
+  </script>
+
+</body>
+</html>
